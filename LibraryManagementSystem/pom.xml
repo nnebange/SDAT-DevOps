@@ -13,22 +13,10 @@
             <version>5.9.3</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- Maven Compiler Plugin -->
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version>
-        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Maven Compiler Plugin (Corrected Placement) -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
-            </plugin>
-        </plugins>
-    </build>
-</project>
+                <groupId>org.apache.maven.plugins</groupId
