@@ -2,44 +2,39 @@ package com.library;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
-class LibraryTest {
-
+public class LibraryTest {
     @Test
-    void testAddAndSearchBook() {
+    public void testIssueBook() {
         Library library = new Library();
-        Book book = new Book("1984", "George Orwell");
+        User user = new User("John Doe");
+        Book book = new Book("Title", "Author");
         library.addBook(book);
-
-        assertNotNull(library.searchBook("1984"));
-        assertNull(library.searchBook("Nonexistent Book"));
+        library.issueBook(user, book);
+        assertFalse(book.isAvailable());
     }
 
     @Test
-    void testIssueBook() {
+    public void testReturnBook() {
         Library library = new Library();
-        Book book = new Book("1984", "George Orwell");
-        User user = new User("Alice");
-
+        User user = new User("John Doe");
+        Book book = new Book("Title", "Author");
         library.addBook(book);
-        library.addUser(user);
-
-        assertTrue(library.issueBook("1984", user));
-        assertFalse(library.issueBook("1984", user)); // Already issued
-    }
-
-    @Test
-    void testReturnBook() {
-        Library library = new Library();
-        Book book = new Book("1984", "George Orwell");
-        User user = new User("Alice");
-
-        library.addBook(book);
-        library.addUser(user);
-        library.issueBook("1984", user);
-
-        library.returnBook("1984", user);
-
+        library.issueBook(user, book);
+        library.returnBook(user, book);
         assertTrue(book.isAvailable());
+    }
+
+    @Test
+    public void testSearchCatalog() {
+        Library library = new Library();
+        Book book1 = new Book("Title1", "Author1");
+        Book book2 = new Book("Title2", "Author2");
+        library.addBook(book1);
+        library.addBook(book2);
+        List<Book> results = library.searchCatalog("Title1");
+        assertEquals(1, results.size());
+        assertEquals(book1, results.get(0));
     }
 }

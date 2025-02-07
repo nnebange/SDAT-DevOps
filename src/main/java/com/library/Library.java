@@ -1,3 +1,4 @@
+
 package com.library;
 
 import java.util.ArrayList;
@@ -8,43 +9,39 @@ public class Library {
     private List<User> users;
 
     public Library() {
-        this.catalog = new ArrayList<>();
-        this.users = new ArrayList<>();
+        catalog = new ArrayList<>();
+        users = new ArrayList<>();
     }
 
     public void addBook(Book book) {
         catalog.add(book);
     }
 
-    public void addUser(User user) {
-        users.add(user);
+    public void removeBook(Book book) {
+        catalog.remove(book);
     }
 
-    public Book searchBook(String title) {
+    public List<Book> searchCatalog(String query) {
+        List<Book> results = new ArrayList<>();
         for (Book book : catalog) {
-            if (book.getTitle().equalsIgnoreCase(title)) {
-                return book;
+            if (book.getTitle().contains(query) || book.getAuthor().contains(query)) {
+                results.add(book);
             }
         }
-        return null;
+        return results;
     }
 
-    public boolean issueBook(String title, User user) {
-        Book book = searchBook(title);
-        if (book != null && book.isAvailable()) {
-            return user.borrowBook(book);
+    public void issueBook(User user, Book book) {
+        if (book.isAvailable() && user.getBorrowingLimit() > 0) {
+            book.setAvailable(false);
+            user.borrowBook(book);
         }
-        return false;
     }
 
-    public void returnBook(String title, User user) {
-        Book book = searchBook(title);
-        if (book != null) {
+    public void returnBook(User user, Book book) {
+        if (!book.isAvailable() && user.hasBorrowedBook(book)) {
+            book.setAvailable(true);
             user.returnBook(book);
         }
-    }
-
-    public List<Book> getCatalog() {
-        return catalog;
     }
 }

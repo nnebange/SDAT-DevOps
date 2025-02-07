@@ -3,29 +3,35 @@ package com.library;
 public class Book {
     private String title;
     private String author;
-    private boolean isAvailable;
+    private boolean available;
 
     public Book(String title, String author) {
         this.title = title;
         this.author = author;
-        this.isAvailable = true;
+        this.available = true;
     }
 
     public String getTitle() {
         return title;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
     public boolean isAvailable() {
-        return isAvailable;
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     public void borrowBook() {
-        if (isAvailable) {
-            isAvailable = false;
-        }
+        this.available = false;
     }
 
     public void returnBook() {
-        isAvailable = true;
+        this.available = true;
     }
 }
