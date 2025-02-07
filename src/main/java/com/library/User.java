@@ -6,12 +6,11 @@ import java.util.List;
 public class User {
     private String name;
     private List<Book> borrowedBooks;
-    private int borrowingLimit;
+    private static final int BORROWING_LIMIT = 5; // Set a default limit
 
     public User(String name) {
         this.name = name;
         this.borrowedBooks = new ArrayList<>();
-        this.borrowingLimit = 5; // default borrowing limit
     }
 
     public String getName() {
@@ -19,28 +18,32 @@ public class User {
     }
 
     public List<Book> getBorrowedBooks() {
-        return borrowedBooks;
+        return new ArrayList<>(borrowedBooks); // Return a copy to prevent external modification
     }
 
-    public void borrowBook(Book book) {
-        if (book.isAvailable() && borrowedBooks.size() < borrowingLimit) {
+    public boolean borrowBook(Book book) {
+        if (book.isAvailable() && borrowedBooks.size() < BORROWING_LIMIT) {
             borrowedBooks.add(book);
             book.setAvailable(false);
+            return true;
         }
+        return false;
     }
 
-    public void returnBook(Book book) {
+    public boolean returnBook(Book book) {
         if (borrowedBooks.contains(book)) {
             borrowedBooks.remove(book);
             book.setAvailable(true);
+            return true;
         }
+        return false;
     }
 
     public boolean hasBorrowedBook(Book book) {
         return borrowedBooks.contains(book);
     }
 
-    public int getBorrowingLimit() {
-        return borrowingLimit;
+    public int getRemainingBorrowingLimit() {
+        return BORROWING_LIMIT - borrowedBooks.size();
     }
 }

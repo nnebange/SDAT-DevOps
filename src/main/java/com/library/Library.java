@@ -1,4 +1,3 @@
-
 package com.library;
 
 import java.util.ArrayList;
@@ -24,24 +23,25 @@ public class Library {
     public List<Book> searchCatalog(String query) {
         List<Book> results = new ArrayList<>();
         for (Book book : catalog) {
-            if (book.getTitle().contains(query) || book.getAuthor().contains(query)) {
+            if (book.getTitle().toLowerCase().contains(query.toLowerCase()) || 
+                book.getAuthor().toLowerCase().contains(query.toLowerCase())) {
                 results.add(book);
             }
         }
         return results;
     }
 
-    public void issueBook(User user, Book book) {
-        if (book.isAvailable() && user.getBorrowingLimit() > 0) {
-            book.setAvailable(false);
-            user.borrowBook(book);
+    public boolean issueBook(User user, Book book) {
+        if (catalog.contains(book) && book.isAvailable() && user.borrowBook(book)) {
+            return true;
         }
+        return false;
     }
 
-    public void returnBook(User user, Book book) {
-        if (!book.isAvailable() && user.hasBorrowedBook(book)) {
-            book.setAvailable(true);
-            user.returnBook(book);
+    public boolean returnBook(User user, Book book) {
+        if (catalog.contains(book) && user.hasBorrowedBook(book)) {
+            return user.returnBook(book);
         }
+        return false;
     }
 }
