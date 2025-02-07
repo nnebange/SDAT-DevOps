@@ -11,6 +11,7 @@ on:
 permissions:
   contents: read
   security-events: write
+  dependency-graph: write
 
 jobs:
   build:
